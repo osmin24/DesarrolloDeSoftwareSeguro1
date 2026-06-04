@@ -4,11 +4,13 @@
  */
 package com.iudigital.proyecto.ds.iudigital;
 
+import Notify.Notify;
 import controller.ControllerFuncionario;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import model.Funcionario;
 import model.IControllerFuncionario;
@@ -19,9 +21,10 @@ import model.IControllerFuncionario;
  */
 public class GestionFuncionarios extends javax.swing.JFrame {
 
+    private Notify notify = new Notify();
     private IControllerFuncionario controllerFuncionario;
     private Funcionario funcionario = new Funcionario();
-    private static final String[] COLUMNS = {"tipo_identificacion","numero_identificacion", "nombres", "apellidos","anos", "nivel_educativo"};
+    private static final String[] COLUMNS = {"tipo_identificacion","numero_identificacion", "nombres", "apellidos","anos", "nivel_educativo","rol","password","email"};
     /**
      * Creates new form GestionFuncionarios
      */
@@ -56,7 +59,7 @@ public class GestionFuncionarios extends javax.swing.JFrame {
     private void initComponents() {
 
         jComboBox1 = new javax.swing.JComboBox<>();
-        Panel = new javax.swing.JTabbedPane();
+        AutenticarPanel = new javax.swing.JTabbedPane();
         jInternalFrame1 = new javax.swing.JInternalFrame();
         Registrar = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -67,11 +70,17 @@ public class GestionFuncionarios extends javax.swing.JFrame {
         jLabel4 = new javax.swing.JLabel();
         tipoDocumento = new javax.swing.JComboBox<>();
         jLabel5 = new javax.swing.JLabel();
-        numeroDocumento = new javax.swing.JTextField();
         jLabel13 = new javax.swing.JLabel();
         anos = new javax.swing.JSpinner();
         jLabel14 = new javax.swing.JLabel();
         nivelEducativo = new javax.swing.JComboBox<>();
+        numeroDocumento1 = new javax.swing.JTextField();
+        jLabel23 = new javax.swing.JLabel();
+        rolRegistrar1 = new javax.swing.JTextField();
+        jLabel24 = new javax.swing.JLabel();
+        password = new javax.swing.JTextField();
+        jLabel25 = new javax.swing.JLabel();
+        registrarEmail1 = new javax.swing.JTextField();
         jInternalFrame2 = new javax.swing.JInternalFrame();
         Actualizar = new javax.swing.JButton();
         jLabel6 = new javax.swing.JLabel();
@@ -111,13 +120,20 @@ public class GestionFuncionarios extends javax.swing.JFrame {
         jLabel22 = new javax.swing.JLabel();
         borrarNivelEducativo = new javax.swing.JComboBox<>();
         borrarAnos = new javax.swing.JSpinner();
+        jPanel2 = new javax.swing.JPanel();
+        jLabel26 = new javax.swing.JLabel();
+        autenticarEmail = new javax.swing.JTextField();
+        autenticar = new javax.swing.JButton();
+        autenticaCodigo = new javax.swing.JTextField();
+        jLabel27 = new javax.swing.JLabel();
+        autenticarCodigo = new javax.swing.JButton();
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(153, 255, 204));
 
-        Panel.setAlignmentX(getAlignmentX());
+        AutenticarPanel.setAlignmentX(getAlignmentX());
 
         jInternalFrame1.setVisible(true);
 
@@ -154,17 +170,41 @@ public class GestionFuncionarios extends javax.swing.JFrame {
 
         jLabel5.setText("Numero de documento");
 
-        numeroDocumento.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                numeroDocumentoActionPerformed(evt);
-            }
-        });
-
         jLabel13.setText("Años");
 
         jLabel14.setText("Nivel educativo");
 
         nivelEducativo.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Bachiller", "Tecnico", "Tecnologo", "Profesional" }));
+
+        numeroDocumento1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                numeroDocumento1ActionPerformed(evt);
+            }
+        });
+
+        jLabel23.setText("Rol");
+
+        rolRegistrar1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rolRegistrar1ActionPerformed(evt);
+            }
+        });
+
+        jLabel24.setText("Password");
+
+        password.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                passwordActionPerformed(evt);
+            }
+        });
+
+        jLabel25.setText("Email");
+
+        registrarEmail1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                registrarEmail1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jInternalFrame1Layout = new javax.swing.GroupLayout(jInternalFrame1.getContentPane());
         jInternalFrame1.getContentPane().setLayout(jInternalFrame1Layout);
@@ -177,37 +217,52 @@ public class GestionFuncionarios extends javax.swing.JFrame {
             .addGroup(jInternalFrame1Layout.createSequentialGroup()
                 .addGap(25, 25, 25)
                 .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(registrarEmail1, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 146, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(jInternalFrame1Layout.createSequentialGroup()
                         .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jInternalFrame1Layout.createSequentialGroup()
+                            .addGroup(jInternalFrame1Layout.createSequentialGroup()
                                 .addComponent(anos, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(18, 18, 18)
                                 .addComponent(nivelEducativo, 0, 125, Short.MAX_VALUE))
-                            .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addGroup(jInternalFrame1Layout.createSequentialGroup()
-                                    .addComponent(jLabel2)
-                                    .addGap(95, 95, 95)
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(jInternalFrame1Layout.createSequentialGroup()
-                                    .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(nombres, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGap(18, 18, 18)
-                                    .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                        .addComponent(apellidos, javax.swing.GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE)
-                                        .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
-                        .addGap(20, 20, 20)
+                            .addGroup(jInternalFrame1Layout.createSequentialGroup()
+                                .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(nombres, javax.swing.GroupLayout.DEFAULT_SIZE, 129, Short.MAX_VALUE)
+                                    .addComponent(jLabel13, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jInternalFrame1Layout.createSequentialGroup()
+                                        .addGap(18, 18, 18)
+                                        .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addComponent(apellidos, javax.swing.GroupLayout.DEFAULT_SIZE, 125, Short.MAX_VALUE)
+                                            .addComponent(jLabel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                    .addGroup(jInternalFrame1Layout.createSequentialGroup()
+                                        .addGap(18, 18, 18)
+                                        .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
                         .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(jInternalFrame1Layout.createSequentialGroup()
-                                .addGap(6, 6, 6)
-                                .addComponent(tipoDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(numeroDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(20, 20, 20)
+                                .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(26, 26, 26)
+                                .addComponent(jLabel5))
                             .addGroup(jInternalFrame1Layout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addGap(62, 62, 62)
-                                .addComponent(jLabel5)))))
+                                .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(jInternalFrame1Layout.createSequentialGroup()
+                                        .addGap(18, 18, 18)
+                                        .addComponent(tipoDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(jInternalFrame1Layout.createSequentialGroup()
+                                        .addGap(20, 20, 20)
+                                        .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                            .addGroup(jInternalFrame1Layout.createSequentialGroup()
+                                                .addGap(6, 6, 6)
+                                                .addComponent(jLabel23, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                            .addComponent(rolRegistrar1, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGap(24, 24, 24)
+                                .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(numeroDocumento1, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(jLabel24, javax.swing.GroupLayout.PREFERRED_SIZE, 85, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(password, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                    .addComponent(jLabel25, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(90, Short.MAX_VALUE))
         );
         jInternalFrame1Layout.setVerticalGroup(
@@ -226,21 +281,29 @@ public class GestionFuncionarios extends javax.swing.JFrame {
                     .addComponent(nombres, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(apellidos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(tipoDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(numeroDocumento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(numeroDocumento1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(28, 28, 28)
                 .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13)
-                    .addComponent(jLabel14))
+                    .addComponent(jLabel14)
+                    .addComponent(jLabel23)
+                    .addComponent(jLabel24))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jInternalFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(anos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(nivelEducativo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 204, Short.MAX_VALUE)
+                    .addComponent(nivelEducativo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(rolRegistrar1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(password, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(19, 19, 19)
+                .addComponent(jLabel25)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(registrarEmail1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 141, Short.MAX_VALUE)
                 .addComponent(Registrar)
                 .addGap(49, 49, 49))
         );
 
-        Panel.addTab("Registrar funcionarios", jInternalFrame1);
+        AutenticarPanel.addTab("Registrar funcionarios", jInternalFrame1);
 
         jInternalFrame2.setVisible(true);
 
@@ -377,7 +440,7 @@ public class GestionFuncionarios extends javax.swing.JFrame {
                 .addGap(80, 80, 80))
         );
 
-        Panel.addTab("Actulaizar funcionarios", jInternalFrame2);
+        AutenticarPanel.addTab("Actulaizar funcionarios", jInternalFrame2);
 
         jInternalFrame3.setVisible(true);
 
@@ -453,7 +516,7 @@ public class GestionFuncionarios extends javax.swing.JFrame {
                 .addContainerGap(37, Short.MAX_VALUE))
         );
 
-        Panel.addTab("Consultar funcinarios", jInternalFrame3);
+        AutenticarPanel.addTab("Consultar funcinarios", jInternalFrame3);
 
         jInternalFrame4.setBackground(new java.awt.Color(60, 60, 60));
         jInternalFrame4.setForeground(new java.awt.Color(255, 153, 153));
@@ -579,17 +642,98 @@ public class GestionFuncionarios extends javax.swing.JFrame {
                 .addGap(67, 67, 67))
         );
 
-        Panel.addTab("Borrar", jInternalFrame4);
+        AutenticarPanel.addTab("Borrar", jInternalFrame4);
+
+        jLabel26.setText("Codigo ");
+
+        autenticarEmail.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                autenticarEmailActionPerformed(evt);
+            }
+        });
+
+        autenticar.setBackground(new java.awt.Color(51, 51, 255));
+        autenticar.setForeground(new java.awt.Color(255, 255, 255));
+        autenticar.setText("Autenticar");
+        autenticar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                autenticarActionPerformed(evt);
+            }
+        });
+
+        jLabel27.setText("Email");
+
+        autenticarCodigo.setBackground(new java.awt.Color(51, 51, 255));
+        autenticarCodigo.setForeground(new java.awt.Color(255, 255, 255));
+        autenticarCodigo.setText("Verificar codigo");
+        autenticarCodigo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                autenticarCodigoActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(138, 138, 138)
+                        .addComponent(autenticarEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(120, 120, 120)
+                        .addComponent(autenticar, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(276, 276, 276)
+                        .addComponent(autenticaCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 192, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(160, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(autenticarCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(293, 293, 293))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel26, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(329, 329, 329))))
+            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createSequentialGroup()
+                    .addGap(148, 148, 148)
+                    .addComponent(jLabel27, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGap(400, 400, 400)))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(182, 182, 182)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(autenticarEmail, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(autenticar))
+                .addGap(105, 105, 105)
+                .addComponent(jLabel26)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(autenticaCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(autenticarCodigo)
+                .addContainerGap(133, Short.MAX_VALUE))
+            .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel2Layout.createSequentialGroup()
+                    .addGap(159, 159, 159)
+                    .addComponent(jLabel27)
+                    .addContainerGap(347, Short.MAX_VALUE)))
+        );
+
+        AutenticarPanel.addTab("Autenticar por emial", jPanel2);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(Panel)
+            .addComponent(AutenticarPanel)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(Panel)
+            .addComponent(AutenticarPanel)
         );
 
         pack();
@@ -639,23 +783,35 @@ public class GestionFuncionarios extends javax.swing.JFrame {
 
     private void RegistrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RegistrarActionPerformed
         // TODO add your handling code here:
-        try{
-            Funcionario funcionarioNuevo = new Funcionario();
-            funcionarioNuevo.setTipoDocumento(tipoDocumento.getSelectedItem().toString());
-            funcionarioNuevo.setNumeroDocumento(numeroDocumento.getText());
-            funcionarioNuevo.setNombres(nombres.getText());
-            funcionarioNuevo.setApellidos(apellidos.getText());
-            funcionarioNuevo.setAnos((int)anos.getValue());
-            funcionarioNuevo.setNivelEducativo(nivelEducativo.getSelectedItem().toString());
-            this.controllerFuncionario.setFuncionario(funcionarioNuevo);
-        }catch(SQLException error){
-                System.out.println(error.toString());
-        }finally{
-            numeroDocumento.setText("");
-            nombres.setText("");
-            apellidos.setText("");
-            anos.setValue(0);
-        }
+        try {
+                Funcionario funcionarioNuevo = new Funcionario();
+                funcionarioNuevo.setTipoDocumento(tipoDocumento.getSelectedItem().toString());
+                funcionarioNuevo.setNumeroDocumento(numeroDocumento1.getText());
+                funcionarioNuevo.setNombres(nombres.getText());
+                funcionarioNuevo.setApellidos(apellidos.getText());
+                funcionarioNuevo.setAnos((int)anos.getValue());
+                funcionarioNuevo.setNivelEducativo(nivelEducativo.getSelectedItem().toString());
+                funcionarioNuevo.setRol(rolRegistrar1.getText());
+                funcionarioNuevo.setPassword(password.getText());
+                funcionarioNuevo.setEmail(registrarEmail1.getText());
+
+                // 1. Pasas el objeto al controlador
+                this.controllerFuncionario.setFuncionario(funcionarioNuevo);
+
+             
+
+            } catch(Exception error) { // Cambiado a Exception genérica por si acaso
+                System.out.println("Error en la interfaz: " + error.toString());
+            } finally {
+                // Limpieza de campos (Tu código original)
+                numeroDocumento1.setText("");
+                nombres.setText("");
+                apellidos.setText("");
+                anos.setValue(0);
+                rolRegistrar1.setText("");
+                password.setText("");
+                registrarEmail1.setText("");
+            }
     }//GEN-LAST:event_RegistrarActionPerformed
 
     private void nombresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nombresActionPerformed
@@ -665,10 +821,6 @@ public class GestionFuncionarios extends javax.swing.JFrame {
     private void apellidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_apellidosActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_apellidosActionPerformed
-
-    private void numeroDocumentoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_numeroDocumentoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_numeroDocumentoActionPerformed
 
     private void actualizarNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_actualizarNombreActionPerformed
         // TODO add your handling code here:
@@ -703,6 +855,9 @@ public class GestionFuncionarios extends javax.swing.JFrame {
                 defaultTableModel.setValueAt(element.getApellidos(), row, 3);
                 defaultTableModel.setValueAt(element.getAnos(), row, 4);
                 defaultTableModel.setValueAt(element.getNivelEducativo(), row, 5);
+                defaultTableModel.setValueAt(element.getRol(), row, 6);
+                defaultTableModel.setValueAt(element.getPassword(), row, 7);
+                defaultTableModel.setValueAt(element.getEmail(), row, 8);
                 row++;
             }
         }catch(SQLException error){
@@ -751,6 +906,55 @@ public class GestionFuncionarios extends javax.swing.JFrame {
             }
     }//GEN-LAST:event_ActualizarActionPerformed
 
+    private void autenticarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_autenticarActionPerformed
+        Funcionario funcionarioSelect = new Funcionario();
+        funcionarioSelect.setEmail(registrarEmail1.getText());
+        int codigo = this.notify.setNotifyUser(funcionario);
+        String text = String.valueOf(codigo);
+        this.notify.guardarCodigoRedis(funcionarioSelect.getEmail(), text);
+    }//GEN-LAST:event_autenticarActionPerformed
+
+    private void numeroDocumento1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_numeroDocumento1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_numeroDocumento1ActionPerformed
+
+    private void rolRegistrar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rolRegistrar1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rolRegistrar1ActionPerformed
+
+    private void passwordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_passwordActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_passwordActionPerformed
+
+    private void registrarEmail1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_registrarEmail1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_registrarEmail1ActionPerformed
+
+    private void autenticarEmailActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_autenticarEmailActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_autenticarEmailActionPerformed
+
+    private void autenticarCodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_autenticarCodigoActionPerformed
+        // TODO add your handling code here:
+        Funcionario funcionarioSelect = new Funcionario();
+        funcionarioSelect.setEmail(registrarEmail1.getText());
+        if(this.notify.verificarCodigo(funcionarioSelect.getEmail(), autenticaCodigo.getText())){
+            JOptionPane.showMessageDialog(
+                null, 
+                "¡Verificación exitosa! El usuario ha sido validado.", // Mensaje dentro de la ventana
+                "Verificación",                                      // Título de la ventana
+                JOptionPane.INFORMATION_MESSAGE                     // Tipo de mensaje (Icono de información)
+            );
+        }else{
+            JOptionPane.showMessageDialog(
+                null, 
+                "Error: La verificación ha fallado. Datos incorrectos.", 
+                "Error de Verificación", 
+                JOptionPane.ERROR_MESSAGE                         // Tipo de mensaje (Icono de error/X roja)
+            );
+        }
+    }//GEN-LAST:event_autenticarCodigoActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -788,7 +992,7 @@ public class GestionFuncionarios extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton Actualizar;
-    private javax.swing.JTabbedPane Panel;
+    private javax.swing.JTabbedPane AutenticarPanel;
     private javax.swing.JButton Registrar;
     private javax.swing.JTextField actualizarApellidos;
     private javax.swing.JButton actualizarBuscar;
@@ -800,6 +1004,10 @@ public class GestionFuncionarios extends javax.swing.JFrame {
     private javax.swing.JTextField actulizarNumeroDocumentoBuscar;
     private javax.swing.JSpinner anos;
     private javax.swing.JTextField apellidos;
+    private javax.swing.JTextField autenticaCodigo;
+    private javax.swing.JButton autenticar;
+    private javax.swing.JButton autenticarCodigo;
+    private javax.swing.JTextField autenticarEmail;
     private javax.swing.JSpinner borrarAnos;
     private javax.swing.JTextField borrarApellidos;
     private javax.swing.JComboBox<String> borrarNivelEducativo;
@@ -829,6 +1037,11 @@ public class GestionFuncionarios extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
+    private javax.swing.JLabel jLabel25;
+    private javax.swing.JLabel jLabel26;
+    private javax.swing.JLabel jLabel27;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -837,11 +1050,15 @@ public class GestionFuncionarios extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JComboBox<String> listFuncionariosDelete;
     private javax.swing.JComboBox<String> nivelEducativo;
     private javax.swing.JTextField nombres;
-    private javax.swing.JTextField numeroDocumento;
+    private javax.swing.JTextField numeroDocumento1;
+    private javax.swing.JTextField password;
+    private javax.swing.JTextField registrarEmail1;
+    private javax.swing.JTextField rolRegistrar1;
     private javax.swing.JComboBox<String> tipoDocumento;
     // End of variables declaration//GEN-END:variables
 }

@@ -13,6 +13,7 @@ import java.util.List;
 import model.CRUD;
 import model.Funcionario;
 import databaseconfig.ConfigurationDB;
+import model.Encryt;
 /**
  *
  * @author HP 255-G9
@@ -25,34 +26,45 @@ public class FuncionarioDOA implements CRUD{
     public void createFuncionario(Funcionario funcionario) throws SQLException{
         Connection connection = null;
         PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
         System.out.println(funcionario.getNombres());
-        String sql = "INSERT INTO funcionario (tipo_identificacion, numero_identificacion, nombres, apellidos, nivel_educativo, anos) VALUES (?, ?, ?, ?, ?, ?)";
+
+        String sql = "INSERT INTO public.funcionario(_id , numero_identificacion, nombres, apellidos, anos, rol, password, email, nivel_educativo, tipo_identificacion) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
         try {
             connection = ConfigurationDB.getConnection();
             preparedStatement = connection.prepareStatement(sql);
-    
-            preparedStatement.setString(1, funcionario.getTipoDocumento());
+
+            String passwordHas = Encryt.encriptarContrasena(funcionario.getPassword());
+
+            // Alerta: Estás repitiendo el NumeroDocumento tanto para el '_id' como para 'numero_identificacion'. 
+            // Asegúrate de que el '_id' en Postgres acepte el formato de documento.
+            preparedStatement.setInt(1, Integer.parseInt(funcionario.getNumeroDocumento())); 
             preparedStatement.setString(2, funcionario.getNumeroDocumento());
             preparedStatement.setString(3, funcionario.getNombres());
             preparedStatement.setString(4, funcionario.getApellidos());
-            preparedStatement.setString(5, funcionario.getNivelEducativo());
-            preparedStatement.setInt(6, funcionario.getAnos()); // Asumiendo que es int
+            preparedStatement.setInt(5, funcionario.getAnos());
+            preparedStatement.setString(6, funcionario.getRol());
+            preparedStatement.setString(7, passwordHas);
+            preparedStatement.setString(8, funcionario.getEmail());
+            preparedStatement.setString(9, funcionario.getNivelEducativo());
+            preparedStatement.setString(10, funcionario.getTipoDocumento());
 
             preparedStatement.executeUpdate();
-        }catch(SQLException error){
-            System.out.println("Error en creacion de funcionario:  "+error.toString());
-        }finally{
-            if(connection != null){
-                connection.close();
-            }
-            if(preparedStatement != null){
-                preparedStatement.close();
-            }
-            if(resultSet != null){
-                resultSet.close();
-            }
+            System.out.println("Funcionario registrado con éxito en la BD.");
+
+        } catch(SQLException error) {
+            System.out.println("Error en creacion de funcionario: " + error.toString());
+        } finally {
+            // CORRECCIÓN: Cada close() debe estar protegido con un try-catch
+            try {
+                if (preparedStatement != null) preparedStatement.close();
+            } catch (SQLException e) { System.out.println(e.getMessage()); }
+
+            try {
+                if (connection != null) connection.close();
+            } catch (SQLException e) { System.out.println(e.getMessage()); }
+
+            // Eliminé el resultSet.close() porque no lo estás usando en un INSERT
         }
     }
 
@@ -76,8 +88,11 @@ public class FuncionarioDOA implements CRUD{
                     funcionario.setNumeroDocumento(resultSet.getString("numero_identificacion"));
                     funcionario.setNombres(resultSet.getString("nombres"));
                     funcionario.setApellidos(resultSet.getString("apellidos"));
-                    funcionario.setNivelEducativo( resultSet.getString("nivel_educativo"));
-                    funcionario.setAnos(resultSet.getInt("anos"));    
+                    funcionario.setAnos(resultSet.getInt("anos")); // Cambié "titulo_grado" por "anos" según tu interfaz
+                    funcionario.setNivelEducativo(resultSet.getString("nivel_educativo"));
+                    funcionario.setRol(resultSet.getString("rol"));
+                    funcionario.setEmail(resultSet.getString("email"));
+                    funcionario.setPassword(resultSet.getString("password"));   
 
                     funcionarios.add(funcionario);
                 }
@@ -178,6 +193,9 @@ public class FuncionarioDOA implements CRUD{
                 funcionario.setApellidos(resultSet.getString("apellidos"));
                 funcionario.setAnos(resultSet.getInt("anos")); // Cambié "titulo_grado" por "anos" según tu interfaz
                 funcionario.setNivelEducativo(resultSet.getString("nivel_educativo"));
+                funcionario.setRol(resultSet.getString("rol"));
+                funcionario.setEmail(resultSet.getString("email"));
+                funcionario.setPassword(resultSet.getString("password"));
             } else {
                 return null; 
             }
